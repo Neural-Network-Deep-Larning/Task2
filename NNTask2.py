@@ -2,38 +2,16 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.metrics import confusion_matrix, accuracy_score, ConfusionMatrixDisplay
-from sklearn.preprocessing import StandardScaler
+
 
 st.set_page_config(layout="wide", page_title="MLP Backprop GUI (Penguins)")
 
 
 # -------------------------
-# Utility / Data loading
+# Utility / Data loading / Pre Processing  will be imported from our last task
 # -------------------------
 @st.cache_data
-def load_penguins_dataset():
-    
-    df = pd.read_csv(r"D:\Downloads\penguins.csv")  
-    
 
-    # Handle null values (fill numeric with mean, categorical with mode)
-    for col in ['CulmenLength', 'CulmenDepth', 'FlipperLength', 'BodyMass']:
-        df[col] = df[col].fillna(df[col].mean())
-    if df['OriginLocation'].isnull().any():
-        df['OriginLocation'] = df['OriginLocation'].fillna(df['OriginLocation'].mode()[0])
-    if df['Species'].isnull().any():
-        df['Species'] = df['Species'].fillna(df['Species'].mode()[0])
-
-    # Encode OriginLocation as numeric
-    df['OriginLocation'] = pd.factorize(df['OriginLocation'])[0]
-
-    # Define features (keep all numeric + encoded location)
-    feature_cols = ['CulmenLength', 'CulmenDepth', 'FlipperLength', 'BodyMass', 'OriginLocation']
-    X = df[feature_cols].copy()
-    y = df['Species'].copy()
-
-    return X, y, df
 
 
 # -------------------------
@@ -109,7 +87,7 @@ st.write('Training samples per class: 30 — total', len(y_train))
 st.write('Test samples per class: 20 — total', len(y_test))
 
 # Scale data
-# TODO: Scaling
+# TODO: Scaling will be imported from our last task
 
 # Encode labels
 label_to_int = {lab: i for i, lab in enumerate(species_list)}
@@ -183,7 +161,7 @@ with col1:
             acc = accuracy_score(y_test_int, y_pred_int)
             st.metric('Test accuracy', f'{acc * 100:.2f}%')
 
-            # TODO (Optional): Add model evaluation saving or visualization.
+            # TODO (Optional): Add model evaluation saving or visualization. will be imported from our last task
             cm = confusion_matrix(y_test_int, y_pred_int, labels=list(range(len(species_list))))
             fig, ax = plt.subplots(figsize=(5, 4))
             ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=species_list).plot(ax=ax, colorbar=False)
